@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #212a31;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.homePageWrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #d3d9d4;
+}
+.formWrapper {
+  background-color: #2e3944;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.inputBox {
+  padding: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.btn {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.joinBtn {
+  background-color: #124e66;
+  color: #d3d9d4;
+  font-weight: bold;
+  width: 100px;
+  margin-left: auto;
+}
+
+.joinBtn:hover {
+  background-color: #0e3d4f;
+}
+
+.newIdDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleSpan {
+  color: #124e66;
+}
+.titleP {
+  color: #748d92;
+}
+.newMsg {
+  color: #124e66;
+  font-weight: bold;
+}
