@@ -38,6 +38,7 @@ body {
   border: none;
   font-size: 16px;
   font-weight: bold;
+  color: #212a31;
 }
 
 .btn {
@@ -74,6 +75,116 @@ body {
   color: #748d92;
 }
 .newMsg {
-  color: #124e66;
+  color: #155e7b;
   font-weight: bold;
+  border-bottom: #155e7b 2px solid;
+  padding-bottom: 2px;
+  cursor: pointer;
+}
+
+.mainWrap {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  height: 100vh;
+}
+
+.aside {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: #d3d9d4;
+  background-color: #2e3944;
+}
+.asideInner {
+  flex: 1;
+}
+/* Style for container with custom scrollbar */
+.clientsList {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Define scrollbar track */
+.clientsList::-webkit-scrollbar-track {
+  background-color: #2e3944; /* Track color */
+}
+
+/* Define scrollbar handle */
+.clientsList::-webkit-scrollbar-thumb {
+  background-color: #748d92; /* Handle color */
+  border-radius: 8px; /* Rounded corners */
+  border: 2px solid #2e3944; /* Border around the handle */
+}
+
+/* Hover effect on scrollbar handle */
+.clientsList::-webkit-scrollbar-thumb:hover {
+  background-color: #93a1a8; /* Handle color on hover */
+}
+
+/* Optional: scrollbar width and height */
+.clientsList::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.client {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  background-color: #3e4c54;
+  padding: 4px 8px;
+  border-radius: 10px;
+  border: 1px solid #748d92;
+}
+
+.clientName {
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 140px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.logoContainer {
+  padding-bottom: 5px;
+  border-bottom: #748d92 2px solid;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  margin-top: 1em;
+}
+.copyBtn {
+  background-color: #124e66;
+  color: #d3d9d4;
+  font-weight: bold;
+  width: 100%;
+}
+.leaveBtn {
+  background-color: #d9534f;
+  color: #d3d9d4;
+  font-weight: bold;
+  width: 100%;
+}
+.copyBtn:hover {
+  background-color: #0e3d4f;
+}
+.leaveBtn:hover {
+  background-color: #c9302c;
 }
