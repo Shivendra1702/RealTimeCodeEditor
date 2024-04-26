@@ -188,3 +188,11 @@ body {
 .leaveBtn:hover {
   background-color: #c9302c;
 }
+
+.CodeMirror {
+  min-height: calc(100vh - 20px);
+  font-size: 16px;
+  line-height: 1.6;
+  padding-top: 20px;
+  padding-left: 10px;
+}

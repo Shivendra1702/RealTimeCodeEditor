@@ -25,7 +25,6 @@ const HomePage = () => {
     navigate(`/editor/${roomId}`, {
       state: {
         username: username,
-        roomId: roomId,
       },
     });
   };
