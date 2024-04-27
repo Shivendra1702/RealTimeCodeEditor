@@ -1,5 +1,4 @@
-export const ACTIONS = 
-{
+export const ACTIONS = {
   JOIN: "join",
   JOINED: "joined",
   DISCONNECTED: "disconnected",
