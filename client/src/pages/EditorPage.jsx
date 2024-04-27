@@ -19,6 +19,7 @@ const EditorPage = () => {
   const reactNavigate = useNavigate();
 
   const socketRef = useRef(null);
+  const codeRef = useRef(null);
 
   const handleErrors = (err) => {
     toast.error("An error occurred. Please try again later.");
@@ -58,6 +59,10 @@ const EditorPage = () => {
             toast.success(`${username} joined the room!`);
           }
           setClients(clients);
+          socketRef.current.emit(ACTIONS.SYNC_CODE, {
+            code: codeRef.current,
+            socketId,
+          });
         }
       );
 
@@ -108,7 +113,13 @@ const EditorPage = () => {
         </div>
       </div>
       <div className="editorWrap">
-        <Editor />
+        <Editor
+          socketRef={socketRef}
+          roomId={roomId}
+          onCodeChange={(code) => {
+            codeRef.current = code;
+          }}
+        />
       </div>
     </div>
   );

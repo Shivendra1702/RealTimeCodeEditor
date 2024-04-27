@@ -6,7 +6,11 @@ const { ACTIONS } = require("./actions");
 const app = express();
 const httpServer = http.createServer(app);
 
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
 
 const userSocketMap = {};
 
@@ -29,6 +33,14 @@ io.on("connection", (socket) => {
         socketId: socket.id,
       });
     });
+  });
+
+  socket.on(ACTIONS.CODE_CHANGE, ({ code, roomId }) => {
+    socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+  });
+
+  socket.on(ACTIONS.SYNC_CODE, ({ code, socketId }) => {
+    io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
   socket.on("disconnecting", () => {
