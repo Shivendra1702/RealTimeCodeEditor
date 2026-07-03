@@ -1,0 +1,271 @@
+.home {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(99, 102, 241, 0.13), transparent 60%),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 100%
+    ),
+    var(--bg);
+}
+
+/* faint grid */
+.home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 30%, transparent 75%);
+  pointer-events: none;
+}
+
+.home__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+.home__glow--one {
+  width: 480px;
+  height: 480px;
+  background: #6366f1;
+  top: -180px;
+  left: 8%;
+  animation: drift 14s ease-in-out infinite alternate;
+}
+
+.home__glow--two {
+  width: 420px;
+  height: 420px;
+  background: #a855f7;
+  bottom: -160px;
+  right: 6%;
+  animation: drift 17s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift {
+  to {
+    transform: translate(40px, 24px) scale(1.08);
+  }
+}
+
+.home__inner {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  animation: rise 420ms var(--ease);
+}
+
+.home__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.home__title {
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  letter-spacing: -0.03em;
+  font-weight: 750;
+}
+
+.home__titleAccent {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home__subtitle {
+  color: var(--text-dim);
+  font-size: 15px;
+  max-width: 40ch;
+}
+
+/* ——— Join card ————————————————————————————————————————————— */
+.joinCard {
+  background: rgba(17, 21, 29, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.joinCard__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.joinCard__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-faint);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.joinCard__divider::before,
+.joinCard__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ——— Recent rooms ———————————————————————————————————————————— */
+.recentRooms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recentRooms__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+.recentRooms__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recentRooms__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recentRooms__join {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  transition: background var(--t-fast), border-color var(--t-fast);
+  min-width: 0;
+}
+
+.recentRooms__join:hover {
+  background: var(--accent-soft);
+  border-color: rgba(124, 140, 248, 0.35);
+}
+
+.recentRooms__join code {
+  font-size: 13px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recentRooms__time {
+  font-size: 12px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+/* ——— Footer strip ———————————————————————————————————————————— */
+.home__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+
+.home__footerItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.home__footerDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+/* ——— Responsive ————————————————————————————————————————————— */
+@media (max-width: 480px) {
+  .home {
+    padding: 24px 14px;
+    padding-left: max(14px, env(safe-area-inset-left, 0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
+    align-items: start;
+  }
+
+  .home__inner {
+    gap: 20px;
+    padding-top: 4vh;
+  }
+
+  .home__subtitle {
+    font-size: 14px;
+  }
+
+  .joinCard {
+    padding: 20px 16px;
+  }
+
+  .home__footer {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    padding-bottom: max(0px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .home__glow--one {
+    width: 300px;
+    height: 300px;
+  }
+
+  .home__glow--two {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+@media (max-width: 360px) {
+  .joinCard {
+    padding: 18px 14px;
+  }
+
+  .recentRooms__time {
+    display: none;
+  }
+}
