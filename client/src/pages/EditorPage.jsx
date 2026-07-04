@@ -55,9 +55,9 @@ const EditorRoom = ({ roomId, username }) => {
   }, [sidebarOpen]);
 
   const handleChange = useCallback(
-    (code, { isLocal }) => {
+    (code, { isLocal, cursor }) => {
       setChars(code.length);
-      if (isLocal) session.sendCodeChange(code);
+      if (isLocal) session.sendCodeChange(code, cursor);
     },
     [session.sendCodeChange] // eslint-disable-line react-hooks/exhaustive-deps
   );

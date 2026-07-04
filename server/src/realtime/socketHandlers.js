@@ -135,10 +135,24 @@ export const registerSocketHandlers = (io, store, config) => {
       }
 
       store.setCode(room.id, code);
-      socket.to(room.id).emit(ACTIONS.CODE_CHANGE, {
+
+      // The sender's cursor rides along with the edit so receivers can move
+      // the remote caret atomically with the text — a separate (throttled)
+      // cursor event would visibly trail behind fast typing.
+      const user = room.users.get(socket.id);
+      const broadcast = {
         code,
         socketId: socket.id,
-      });
+        username: user?.username,
+        color: user?.color,
+      };
+      if (isValidCursor(payload.cursor)) {
+        broadcast.cursor = {
+          line: payload.cursor.line,
+          ch: payload.cursor.ch,
+        };
+      }
+      socket.to(room.id).emit(ACTIONS.CODE_CHANGE, broadcast);
       done({ ok: true });
     });
 

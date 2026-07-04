@@ -205,7 +205,7 @@ export const useCollabSession = ({ roomId, username, editorRef }) => {
       if (name) toast(`${name} left`, { icon: "👋" });
     };
 
-    const onCodeChange = ({ code }) => {
+    const onCodeChange = ({ code, socketId, username, color, cursor }) => {
       if (typeof code !== "string") return;
       // Snapshots broadcast before the server processed our in-flight edits
       // are stale relative to them — drop; the room converges on our acked
@@ -213,6 +213,16 @@ export const useCollabSession = ({ roomId, username, editorRef }) => {
       if (inFlightEditsRef.current > 0) return;
       codeRef.current = code;
       editorRef.current?.applyRemote(code);
+      // The sender's cursor rides with the edit — move the caret in the same
+      // frame as the text so it never visibly trails while they type.
+      if (cursor && socketId) {
+        editorRef.current?.updateRemoteCursor({
+          socketId,
+          username,
+          color,
+          cursor,
+        });
+      }
     };
 
     const onLanguageChange = ({ language: nextLanguage, username: by }) => {
@@ -235,6 +245,10 @@ export const useCollabSession = ({ roomId, username, editorRef }) => {
     };
 
     const onCursorMove = (payload) => {
+      // While our own edits are in flight the incoming position was computed
+      // against a document we've already moved past — skip rather than
+      // clamp the caret somewhere wrong for a frame.
+      if (inFlightEditsRef.current > 0) return;
       editorRef.current?.updateRemoteCursor(payload);
     };
 
@@ -271,13 +285,13 @@ export const useCollabSession = ({ roomId, username, editorRef }) => {
   }, [editorRef]);
 
   const sendCodeChange = useCallback(
-    (code) => {
+    (code, cursor) => {
       codeRef.current = code;
       const socket = socketRef.current;
       if (!socket?.connected) return;
 
       inFlightEditsRef.current += 1;
-      socket.emit(ACTIONS.CODE_CHANGE, { code }, (res) => {
+      socket.emit(ACTIONS.CODE_CHANGE, { code, cursor }, (res) => {
         inFlightEditsRef.current = Math.max(0, inFlightEditsRef.current - 1);
         if (res?.ok) {
           sizeWarnedRef.current = false;

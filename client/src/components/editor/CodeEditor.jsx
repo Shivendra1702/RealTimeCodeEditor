@@ -70,8 +70,10 @@ const CodeEditor = forwardRef(function CodeEditor(
     cmRef.current = cm;
 
     cm.on("change", (instance, change) => {
+      const { line, ch } = instance.getCursor();
       callbacksRef.current.onChange?.(instance.getValue(), {
         isLocal: isLocalOrigin(change.origin),
+        cursor: { line, ch }, // post-edit position, piggybacked on the emit
       });
     });
 
@@ -124,15 +126,47 @@ const CodeEditor = forwardRef(function CodeEditor(
       cmRef.current?.focus();
     },
 
-    /** Renders (or moves) a labeled cursor for a remote participant. */
+    /**
+     * Renders (or moves) a labeled cursor for a remote participant. The
+     * widget element is reused across updates — rebuilding it on every
+     * message (~11/s while a peer types) causes visible flicker — and the
+     * DOM isn't touched at all when the marker is already in place.
+     */
     updateRemoteCursor({ socketId, username, color, cursor }) {
       const cm = cmRef.current;
       if (!cm || !cursor) return;
 
-      this.removeRemoteCursor(socketId);
-
       const line = Math.max(0, Math.min(cursor.line, cm.lastLine()));
       const ch = Math.max(0, Math.min(cursor.ch, cm.getLine(line).length));
+      const map = remoteCursorsRef.current;
+      const existing = map.get(socketId);
+
+      if (existing) {
+        clearTimeout(existing.labelTimer);
+        existing.el.classList.remove("remoteCursor--idle");
+        const name = username || "Guest";
+        if (existing.label.textContent !== name) {
+          existing.label.textContent = name;
+        }
+        if (color) existing.el.style.setProperty("--cursor-color", color);
+        existing.labelTimer = setTimeout(
+          () => existing.el.classList.add("remoteCursor--idle"),
+          CURSOR_LABEL_FADE_MS
+        );
+
+        // Bookmarks auto-shift with document edits (insertLeft), so during
+        // typing the marker is usually already at the right spot.
+        const found = existing.marker.find();
+        const current = found && (found.from || found);
+        if (current && current.line === line && current.ch === ch) return;
+
+        existing.marker.clear();
+        existing.marker = cm.setBookmark(
+          { line, ch },
+          { widget: existing.el, insertLeft: true }
+        );
+        return;
+      }
 
       const el = document.createElement("span");
       el.className = "remoteCursor";
@@ -151,7 +185,7 @@ const CodeEditor = forwardRef(function CodeEditor(
         () => el.classList.add("remoteCursor--idle"),
         CURSOR_LABEL_FADE_MS
       );
-      remoteCursorsRef.current.set(socketId, { marker, labelTimer });
+      remoteCursorsRef.current.set(socketId, { marker, el, label, labelTimer });
     },
 
     removeRemoteCursor(socketId) {

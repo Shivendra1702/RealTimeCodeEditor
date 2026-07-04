@@ -209,6 +209,32 @@ test("code changes are acked with their outcome", async () => {
   }
 });
 
+test("code changes carry the sender's identity and cursor", async () => {
+  const a = await connect();
+  const b = await connect();
+  try {
+    const ackA = await joinOk(a, { roomId: "test-room-piggy", username: "Alice" });
+    await joinOk(b, { roomId: "test-room-piggy", username: "Bob" });
+
+    let received = once(b, ACTIONS.CODE_CHANGE);
+    a.emit(ACTIONS.CODE_CHANGE, { code: "hi", cursor: { line: 0, ch: 2 } });
+    let change = await received;
+    assert.equal(change.username, "Alice");
+    assert.equal(change.color, ackA.self.color);
+    assert.deepEqual(change.cursor, { line: 0, ch: 2 });
+
+    // Malformed cursors are stripped; the code still relays.
+    received = once(b, ACTIONS.CODE_CHANGE);
+    a.emit(ACTIONS.CODE_CHANGE, { code: "hey", cursor: { line: -1, ch: "x" } });
+    change = await received;
+    assert.equal(change.code, "hey");
+    assert.equal(change.cursor, undefined);
+  } finally {
+    a.disconnect();
+    b.disconnect();
+  }
+});
+
 test("join is idempotent on the same socket", async () => {
   const a = await connect();
   try {

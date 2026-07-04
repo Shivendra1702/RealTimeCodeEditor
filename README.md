@@ -89,7 +89,7 @@ Two options:
 | `join` (ack)      | client → server  | `{roomId, username}` → state + `created`, or error |
 | `user:joined`     | server → others  | `{user, users}`                          |
 | `user:left`       | server → others  | `{socketId, username, users}`            |
-| `code:change`     | bidirectional    | `{code}` (acked with outcome; server attaches `socketId`) |
+| `code:change`     | bidirectional    | `{code, cursor?}` (acked; server attaches sender identity so the caret moves with the text) |
 | `language:change` | bidirectional    | `{language}` (+ `username` on broadcast) |
 | `typing`          | bidirectional    | `{}` → `{socketId, username}`            |
 | `cursor:move`     | bidirectional    | `{cursor: {line, ch}}` (+ identity)      |
