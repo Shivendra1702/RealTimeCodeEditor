@@ -1,0 +1,15 @@
+# Render Blueprint — single free web service that builds the client and runs
+# the server (which serves client/dist + the Socket.IO endpoint on one origin).
+# Deploy via Render dashboard -> "New +" -> "Blueprint", or configure manually
+# with the same Build/Start commands.
+services:
+  - type: web
+    name: codetogether
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production

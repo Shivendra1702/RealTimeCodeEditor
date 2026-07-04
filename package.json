@@ -1,0 +1,13 @@
+{
+  "name": "codetogether",
+  "version": "2.0.0",
+  "private": true,
+  "description": "CodeTogether — single-service deploy: the server serves the built client",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "npm --prefix client install --include=dev && npm --prefix client run build && npm --prefix server install --omit=dev",
+    "start": "npm --prefix server start"
+  }
+}
