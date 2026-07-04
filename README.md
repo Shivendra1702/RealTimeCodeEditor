@@ -2,7 +2,9 @@
 
 A real-time collaborative code editor — create a room, share the link, and write code with your team live. No sign-up required.
 
-**Live demo:** https://realtimecodeeditor-sguj.onrender.com
+**Live demo:** https://realtimecodeeditor-docj.onrender.com
+
+> Hosted on Render's free tier — the first request after a period of inactivity may take ~50s while the instance wakes up.
 
 ## Features
 
